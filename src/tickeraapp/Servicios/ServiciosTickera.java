@@ -393,7 +393,7 @@ public class ServiciosTickera {
                     buscarRut(events, rutCliente, tickets, preferencial);
                     break;
                 case 2:
-
+                    System.out.println("Esto no lo he hecho");
                     break;
                 case 3:
                     System.out.println("Ud ha salido del programa");
