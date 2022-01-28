@@ -12,22 +12,46 @@ import java.util.Date;
  * @author Usuario
  */
 public class Vendedor {
-    private String[][] vendedores;
+    private String nombreVendedor;
+    private String rutVendedor;
+    private Date nacimientoVendedor;
 
     public Vendedor() {
     }
 
-    public Vendedor(String[][] vendedores) {
-        this.vendedores = vendedores;
+    public Vendedor(String nombreVendedor, String rutVendedor, Date nacimientoVendedor) {
+        this.nombreVendedor = nombreVendedor;
+        this.rutVendedor = rutVendedor;
+        this.nacimientoVendedor = nacimientoVendedor;
     }
 
-    public String[][] getVendedores() {
-        return vendedores;
+    public String getNombreVendedor() {
+        return nombreVendedor;
     }
-    
-    public void setVendedores(String[][] vendedores) {
-        this.vendedores = vendedores;
+
+    public String getRutVendedor() {
+        return rutVendedor;
     }
-    
-    
+
+    public Date getNacimientoVendedor() {
+        return nacimientoVendedor;
+    }
+
+    public void setNombreVendedor(String nombreVendedor) {
+        this.nombreVendedor = nombreVendedor;
+    }
+
+    public void setRutVendedor(String rutVendedor) {
+        this.rutVendedor = rutVendedor;
+    }
+
+    public void setNacimientoVendedor(Date nacimientoVendedor) {
+        this.nacimientoVendedor = nacimientoVendedor;
+    }
+
+    @Override
+    public String toString() {
+        return "Vendedor{" + "nombreVendedor=" + nombreVendedor + ", rutVendedor=" + rutVendedor + ", nacimientoVendedor=" + nacimientoVendedor + '}';
+    }
+
 }

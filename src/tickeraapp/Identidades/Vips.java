@@ -16,17 +16,19 @@ public class Vips {
     private String[] rutVip;
     private String[] vendedorVip;
     private String[] regaloVip;
+    private String[] estadoVIp;
 
     public Vips() {
     }
 
-    public Vips(float[] precioVip, int[] asientoVip, String[] clienteVip, String[] rutVip, String[] vendedorVip, String[] regaloVip) {
+    public Vips(float[] precioVip, int[] asientoVip, String[] clienteVip, String[] rutVip, String[] vendedorVip, String[] regaloVip, String[] estadoVIp) {
         this.precioVip = precioVip;
         this.asientoVip = asientoVip;
         this.clienteVip = clienteVip;
         this.rutVip = rutVip;
         this.vendedorVip = vendedorVip;
         this.regaloVip = regaloVip;
+        this.estadoVIp = estadoVIp;
     }
 
     public float[] getPrecioVip() {
@@ -53,29 +55,11 @@ public class Vips {
         return regaloVip;
     }
 
-    public void setPrecioVip(float[] precioVip) {
-        this.precioVip = precioVip;
+    public String[] getEstadoVIp() {
+        return estadoVIp;
     }
 
-    public void setAsientoVip(int[] asientoVip) {
-        this.asientoVip = asientoVip;
-    }
-
-    public void setClienteVip(String[] clienteVip) {
-        this.clienteVip = clienteVip;
-    }
-
-    public void setRutVip(String[] rutVip) {
-        this.rutVip = rutVip;
-    }
-
-    public void setVendedorVip(String[] vendedorVip) {
-        this.vendedorVip = vendedorVip;
-    }
-
-    public void setRegaloVip(String[] regaloVip) {
-        this.regaloVip = regaloVip;
-    }
+    
 
     
     

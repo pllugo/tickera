@@ -15,16 +15,18 @@ public class Entrada {
     private String[] clienteNormal;
     private String[] rutClienteNormal;
     private String[] vendedorNormal;
+    private String[] estadoNormal;
 
     public Entrada() {
     }
 
-    public Entrada(float[] precioNormal, int[] asientoNormal, String[] clienteNormal, String[] rutClienteNormal, String[] vendedorNormal) {
+    public Entrada(float[] precioNormal, int[] asientoNormal, String[] clienteNormal, String[] rutClienteNormal, String[] vendedorNormal, String[] estadoNormal) {
         this.precioNormal = precioNormal;
         this.asientoNormal = asientoNormal;
         this.clienteNormal = clienteNormal;
         this.rutClienteNormal = rutClienteNormal;
         this.vendedorNormal = vendedorNormal;
+        this.estadoNormal = estadoNormal;
     }
 
     public float[] getPrecioNormal() {
@@ -47,25 +49,11 @@ public class Entrada {
         return vendedorNormal;
     }
 
-    public void setPrecioNormal(float[] precioNormal) {
-        this.precioNormal = precioNormal;
+    public String[] getEstadoNormal() {
+        return estadoNormal;
     }
 
-    public void setAsientoNormal(int[] asientoNormal) {
-        this.asientoNormal = asientoNormal;
-    }
-
-    public void setClienteNormal(String[] clienteNormal) {
-        this.clienteNormal = clienteNormal;
-    }
-
-    public void setRutClienteNormal(String[] rutClienteNormal) {
-        this.rutClienteNormal = rutClienteNormal;
-    }
-
-    public void setVendedorNormal(String[] vendedorNormal) {
-        this.vendedorNormal = vendedorNormal;
-    }
+    
 
     
     

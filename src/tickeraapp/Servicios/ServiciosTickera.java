@@ -14,6 +14,7 @@ import tickeraapp.Identidades.Cliente;
 import tickeraapp.Identidades.Entrada;
 import tickeraapp.Identidades.Evento;
 import tickeraapp.Identidades.ListaClientes;
+import tickeraapp.Identidades.NombresClientes;
 
 import tickeraapp.Identidades.Vendedor;
 import tickeraapp.Identidades.Vips;
@@ -43,8 +44,9 @@ public class ServiciosTickera {
                 totalEntradas[i] = read.nextInt();
             }
         }
-        
-        Evento events = new Evento(evento, edad, totalEntradas);
+        System.out.println("Ingrese el estado del Evento");
+        String estadoEvento = read.next();
+        Evento events = new Evento(estadoEvento, edad, totalEntradas, estadoEvento);
         return events;
     }
     
@@ -149,102 +151,106 @@ public class ServiciosTickera {
     
     
     public Vendedor crearVendedor(){
-        System.out.println("Ingrese la cantidad de Vendedores");
-        int cantidad = read.nextInt();
-        String[][] matrizVendedores = new String[cantidad][5];
-        for (int i = 0; i < cantidad; i++) {
-            for (int j = 0; j < 5; j++) {
-                switch (j){
-                    case 0:
-                        System.out.println("Ingresar el nombre");
-                        matrizVendedores[i][j] = read.next();
-                        break;
-                    case 1:
-                        System.out.println("Ingresar el Rut");
-                        matrizVendedores[i][j] = read.next();
-                        break;
-                    case 2:
-                        System.out.println("Ingresar la fecha");
-                        matrizVendedores[i][j] = read.next();
-                        break;
-                    case 3:
-                        System.out.println("Ingresar las entradas Normales");
-                        matrizVendedores[i][j] = read.next();
-                        break;
-                    case 4:
-                        System.out.println("Ingresar las entradas VIPs");
-                        matrizVendedores[i][j] = read.next();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        Vendedor salesman = new Vendedor(matrizVendedores);
+        System.out.println("Ingresar el nombre del vendedor");
+        String nombreVendedor = read.next();
+        System.out.println("Ingrese el RUT");
+        String rutVendedor = read.next();
+        System.out.println("Ingrese el dia de nacimiento");
+        int diaVendedor = read.nextInt();
+        System.out.println("Ingrese el mes de nacimiento");
+        int mesVendedor = read.nextInt();
+        System.out.println("Ingrese el año de nacimiento");
+        int yearVendedor = read.nextInt();
+        Date fechanacimiento = new Date();
+        fechanacimiento.setYear(yearVendedor-1900);
+        fechanacimiento.setMonth(mesVendedor-1);
+        fechanacimiento.setDate(diaVendedor);
+        Vendedor salesman = new Vendedor(nombreVendedor, rutVendedor, fechanacimiento);
         return salesman;
     }
     
     
-    public Entrada crearEntrada(ListaClientes lista, String nombre, Vendedor salesman, int posi, int posj){
+    public NombresClientes crearNombres(ListaClientes lista){
+        String[] vectornombres = new String[lista.getNombres().length];
+        for (int i = 0; i < lista.getNombres().length; i++) {
+            vectornombres[i] = lista.getNombres()[i];
+        }
+        NombresClientes listaNombres = new NombresClientes(vectornombres);
+        return listaNombres;
+    }
+    
+    public Entrada entradaNormal(Evento events, ListaClientes lista, Vendedor salesman, NombresClientes listaNombres){
         
-        float[] precioEntrada = new float[lista.getNombres().length];
-        int[] asientoEntrada = new int[lista.getNombres().length];
-        String[] nombreAsignado = new String[lista.getNombres().length];
-        String[] rutAsignado = new String[lista.getNombres().length];
-        String[] vendedorAsignado = new String[lista.getNombres().length];
-        do {
-            for (int i = 0; i < lista.getNombres().length; i++) {
-                if (nombre.equalsIgnoreCase(lista.getNombres()[i])) {
+        
+        float[] precioEntrada = new float[events.getListaEntradas()[0]];
+        int[] asientoEntrada = new int[events.getListaEntradas()[0]];
+        String[] nombreAsignado = new String[events.getListaEntradas()[0]];
+        String[] rutAsignado = new String[events.getListaEntradas()[0]];
+        String[] vendedorAsignado = new String[events.getListaEntradas()[0]];
+        String[] estadoAsignado = new String[events.getListaEntradas()[0]];
+       
+        
+        
+
+        for (int i = 0; i < events.getListaEntradas()[0]; i++) {
+            System.out.println("Ingresar el nombre del cliente");
+            PrintVector(lista.getNombres());
+            String nombre = read.next();
+            
+            for (int j = 0; j < lista.getNombres().length; j++) {
+                if (nombre.equalsIgnoreCase(lista.getNombres()[j])) {
                     nombreAsignado[i] = nombre;
-                    rutAsignado[i] = lista.getRut()[i];
-                    System.out.println("Ingrese el precio de la Entrada");
+                    System.out.println("Ingresar el precio de la entrada normal");
                     precioEntrada[i] = read.nextFloat();
-                    System.out.println("Ingrese el asiento");
+                    System.out.println("Ingresar el asiento");
                     asientoEntrada[i] = read.nextInt();
-                    vendedorAsignado[i] = salesman.getVendedores()[posi][posj];
-                    Entrada ticket = new Entrada(precioEntrada, asientoEntrada, nombreAsignado, rutAsignado, vendedorAsignado);
-                    return ticket;
-                    
-                } else if (i == lista.getNombres().length) {
-                    System.out.println("No se ha encontrar el nombre en los clientes, Por favor, corregir");
-                    nombre = read.next();
+                    rutAsignado[i] = lista.getRut()[j];
+                    vendedorAsignado[i] = salesman.getNombreVendedor();
+                    estadoAsignado[i] = "Comprado";
+                    listaNombres.borrarNombre(lista.getNombres(), nombre);
                 }
             }
-        } while (true);
+        }
         
+        Entrada ticket = new Entrada(precioEntrada, asientoEntrada, nombreAsignado, rutAsignado, vendedorAsignado, estadoAsignado);
+        return ticket;
         
     }
     
     
     
-    public Vips crearVips(ListaClientes lista, String nombre, Vendedor salesman, int posi, int posj){
-        float[] precioVip = new float[lista.getNombres().length];
-        int[] asientoVip = new int[lista.getNombres().length];
-        String[] nombreVip = new String[lista.getNombres().length];
-        String[] rutVip = new String[lista.getNombres().length];
-        String[] vendedorVip = new String[lista.getNombres().length];
-        String[] regaloVip = new String[lista.getNombres().length];
-        do {
-            for (int i = 0; i < lista.getNombres().length; i++) {
-                if (nombre.equalsIgnoreCase(lista.getNombres()[i])) {
+    public Vips entradaVips(Evento events, ListaClientes lista, Vendedor salesman, NombresClientes listaNombres){
+        float[] precioVip = new float[events.getListaEntradas()[1]];
+        int[] asientoVip = new int[events.getListaEntradas()[1]];
+        String[] nombreVip = new String[events.getListaEntradas()[1]];
+        String[] rutVip = new String[events.getListaEntradas()[1]];
+        String[] vendedorVip = new String[events.getListaEntradas()[1]];
+        String[] regaloVip = new String[events.getListaEntradas()[1]];
+        String[] estadoVip = new String[events.getListaEntradas()[1]];
+
+        for (int i = 0; i < events.getListaEntradas()[1]; i++) {
+            System.out.println("Ingresar el nombre del cliente");
+            PrintVector(lista.getNombres());
+            String nombre = read.next();
+            
+            for (int j = 0; j < lista.getNombres().length; j++) {
+                if (nombre.equalsIgnoreCase(lista.getNombres()[j])) {
                     nombreVip[i] = nombre;
-                    rutVip[i] = lista.getRut()[i];
-                    System.out.println("Ingrese el precio de la Entrada");
+                    System.out.println("Ingresar el precio de la entrada Vip");
                     precioVip[i] = read.nextFloat();
-                    System.out.println("Ingrese el asiento");
+                    System.out.println("Ingresar el asiento");
                     asientoVip[i] = read.nextInt();
-                    System.out.println("Ingrese el regalo VIP");
+                    rutVip[i] = lista.getRut()[j];
+                    vendedorVip[i] = salesman.getNombreVendedor();
+                    System.out.println("Ingresar el regalo VIP");
                     regaloVip[i] = read.next();
-                    vendedorVip[i] = salesman.getVendedores()[posi][posj];
-                    Vips preferencial = new Vips(precioVip, asientoVip, nombreVip, rutVip, vendedorVip, regaloVip);
-                    return preferencial;
-                    
-                } else if (i == lista.getNombres().length) {
-                    System.out.println("No se ha encontrar el nombre en los clientes, Por favor, corregir");
-                    nombre = read.next();
+                    estadoVip[i] = "Comprado";
+                    listaNombres.borrarNombre(lista.getNombres(), nombre);
                 }
             }
-        } while (true);
+        }
+        Vips preferencial = new Vips(precioVip, asientoVip, nombreVip, rutVip, vendedorVip, regaloVip, estadoVip);
+        return preferencial;
     }
     
     
@@ -266,6 +272,7 @@ public class ServiciosTickera {
         }
     }
 
+    
     public boolean admisionEvento(Evento events, int edadCalculada) {
 
         if (events.getEdadEvento() < edadCalculada) {
@@ -278,122 +285,82 @@ public class ServiciosTickera {
     }
 
     
-    
-    
-   
-    
-    
-    public Entrada venderEntradas(int cantidadEntradas, ListaClientes lista, Evento events, Vendedor salesman) {
-        int opcion, contNormales, contVip;
-        contNormales = 0;
-        contVip = 0;
-        String nombreVendedor, nombreCliente;
-        String[] vectorNombres = new String[lista.getNombres().length];
-        for (int i = 0; i < lista.getNombres().length; i++) {
-            vectorNombres[i] = lista.getNombres()[i];
-        }
-        
-        do {
-            if (contNormales < events.getListaEntradas()[0]) {
-                System.out.println("Se puede seguir vendiendo entradas");
-                contNormales = contNormales + 1;
-                System.out.println("Seleccione el nombre del Vendedor: ");
-                nombreVendedor = read.next();
-                for (int i = 0; i < salesman.getVendedores().length; i++) {
-                    for (int j = 0; j < salesman.getVendedores().length; j++) {
-                        if (i >= 0 && j == 0 && salesman.getVendedores()[i][j].equalsIgnoreCase(nombreVendedor)) {
-                            salesman.getVendedores()[i][3] = String.valueOf(Integer.parseInt(salesman.getVendedores()[i][3]) + 1);
-                            System.out.println("Escojer el cliente");
-                            PrintVector(vectorNombres);
-                            nombreCliente = read.next();
-                            borrarNombre(vectorNombres, nombreCliente);
-                            Entrada tickesito = crearEntrada(lista, nombreCliente, salesman, i, j);
-                            return tickesito;
-                        }
-                    }
-                }
-            } else if (contNormales == events.getListaEntradas()[0]) {
-                System.out.println("No se puede vender entradas");
-                contNormales = events.getListaEntradas()[0];
-            } else {
-                System.out.println("No se puede vender entradas");
-                contNormales = events.getListaEntradas()[0];
-            }
-        } while (true);
-        
+    public Entrada venderNormales(ListaClientes lista, Evento events, Vendedor salesman, NombresClientes listaNombres) {
+        Entrada normales = entradaNormal(events, lista, salesman, listaNombres);
+        return normales;
     }
     
-    
-    public Vips venderVips(int cantidadEntradas, ListaClientes lista, Evento events, Vendedor salesman){
-        int contVip = 0;
-        String nombreVendedor, nombreCliente;
-        String[] vectorNombres = new String[lista.getNombres().length];
-        for (int i = 0; i < lista.getNombres().length; i++) {
-            vectorNombres[i] = lista.getNombres()[i];
-        }
-        do {
-            if (contVip < events.getListaEntradas()[1]) {
-                System.out.println("Si se puede vender entradas");
-                contVip = contVip + 1;
-                System.out.println("Seleccione el nombre del Vendedor: ");
-                nombreVendedor = read.next();
-                for (int i = 0; i < salesman.getVendedores().length; i++) {
-                    for (int j = 0; j < salesman.getVendedores().length; j++) {
-                        if (i >= 0 && j == 0 && salesman.getVendedores()[i][j].equalsIgnoreCase(nombreVendedor)) {
-                            salesman.getVendedores()[i][4] = String.valueOf(Integer.parseInt(salesman.getVendedores()[i][4]) + 1);
-                            System.out.println("Escojer el cliente");
-                            PrintVector(vectorNombres);
-                            nombreCliente = read.next();
-                            borrarNombre(vectorNombres, nombreCliente);
-                            Vips tickesito = crearVips(lista, nombreCliente, salesman, i, j);
-                            return tickesito;
-                        }
-                    }
-                }
-            } else if (contVip == events.getListaEntradas()[1]) {
-                System.out.println("No se puede vender entradas");
-                contVip = events.getListaEntradas()[1];
-            } else {
-                System.out.println("No se puede vender entradas");
-                contVip = events.getListaEntradas()[1];
-            }
-        } while (true);
+    public Vips venderVips(ListaClientes lista, Evento events, Vendedor salesman, NombresClientes listaNombres){
+        Vips exclusivos = entradaVips(events, lista, salesman, listaNombres);
+        return exclusivos;
     }
-    
-    
-    
     
     public void buscarRut(Evento events, String rutCliente, Entrada ticket, Vips preferencial) {
         boolean bandera = true;
         do {
             for (int i = 0; i < ticket.getClienteNormal().length; i++) {
                 if (rutCliente.equalsIgnoreCase(ticket.getRutClienteNormal()[i])) {
-                    System.out.println("Usando la entrada con Cliente " + ticket.getClienteNormal()[i] + " " + ticket.getRutClienteNormal()[i] + " para evento " + events.getNombreEevento());
+                    System.out.println("Usando la entrada con Cliente " + ticket.getClienteNormal()[i] + " con RUT " + ticket.getRutClienteNormal()[i] + " para evento " + events.getNombreEevento() + " puede pasar");
+                    ticket.getEstadoNormal()[i] = "Ya se uso";
                     bandera = false;
                 } else if (i == (ticket.getClienteNormal().length - 1)) {
-                    System.out.println("No se encuentra el Rut, por favor ingresar de nuevo el Rut");
+                    for (int j = 0; j < preferencial.getClienteVip().length; j++) {
+                        if (rutCliente.equalsIgnoreCase(preferencial.getRutVip()[j])) {
+                            System.out.println("Usando la entrada con Cliente " + preferencial.getClienteVip()[i] + " con RUT " + preferencial.getRutVip()[i] + " para evento " + events.getNombreEevento() + " puede pasar");
+                            preferencial.getEstadoVIp()[i] = "Ya se uso";
+                            bandera = false;
+                        }
+                    }
                 }
             }
         } while (bandera == true);
 
     }
     
-    public void ingresoEvento(Evento events, ListaClientes lista, Entrada tickets, Vips preferencial) {
+    
+    public void entradasUsadas(Evento events, String rutCliente, Entrada ticket, Vips preferencial, String estado){
+        boolean bandera = true;
+        do {
+            for (int i = 0; i < ticket.getClienteNormal().length; i++) {
+                if (rutCliente.equalsIgnoreCase(ticket.getRutClienteNormal()[i]) && (estado.equalsIgnoreCase(ticket.getEstadoNormal()[i]))) {
+                    System.out.println("La entrada con Cliente " + ticket.getClienteNormal()[i] + " con RUT " + ticket.getRutClienteNormal()[i] + " para evento " + events.getNombreEevento() + " Ya fue usada, no puede pasar");
+                    
+                    bandera = false;
+                } else if (i == (ticket.getClienteNormal().length - 1)) {
+                    for (int j = 0; j < preferencial.getClienteVip().length; j++) {
+                        if (rutCliente.equalsIgnoreCase(preferencial.getRutVip()[j]) && (estado.equalsIgnoreCase(ticket.getEstadoNormal()[i]))) {
+                            System.out.println("La entrada con Cliente " + preferencial.getClienteVip()[i] + " con RUT " + preferencial.getRutVip()[i] + " para evento " + events.getNombreEevento() + " Ya fué usada, no puede pasar");
+                            
+                            bandera = false;
+                        }
+                    }
+                }
+            }
+        } while (bandera == true);
+
+    }
+    
+    
+    
+    public void ingresoEvento(Evento events, Entrada tickets, Vips preferencial) {
         
-        
+        String rutCliente;
         boolean flag = true;
         do {
-            System.out.println("Ingrese si el evento esta en curso: 1) Esta en curso 2) Evento no esta en curso 3) Salir");
+            System.out.println("Ingrese si el evento: 1) Esta en curso 2) Evento esta en curso (Verificación de entrada)  3) Salir");
             int opcionEvento = read.nextInt();
             switch (opcionEvento) {
                 case 1:
+                    events.setEstadoEvento("EnCurso");
                     System.out.println("Ingrese el Rut del cliente");
-                    String rutCliente = read.next();
-                    PrintVector(lista.getNombres());
+                    rutCliente = read.next();
                     buscarRut(events, rutCliente, tickets, preferencial);
                     break;
                 case 2:
-                    System.out.println("Esto no lo he hecho");
+                    System.out.println("Ingrese el Rut del cliente");
+                    rutCliente = read.next();
+                    String estado = "Ya se uso";
+                    entradasUsadas(events, rutCliente, tickets, preferencial, estado);
                     break;
                 case 3:
                     System.out.println("Ud ha salido del programa");
